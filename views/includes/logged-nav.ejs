@@ -1,0 +1,68 @@
+<% if (user.role === 'user') { %>
+<nav class="bg-white shadow-md sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-xl">WT</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900">Workout Tracker</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="/workouts" class="text-blue-600 font-semibold"> Workouts </a>
+        <a
+          href="/profile/<%= user._id %>"
+          class="text-gray-700 hover:text-blue-600 transition-colors"
+        >
+          Profile
+        </a>
+        <form action="/api/auth/logout" method="POST">
+          <button type="submit" class="text-gray-700 hover:text-red-600 transition-colors">
+            Logout
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+<% } else { %>
+<nav class="bg-white shadow-md sticky top-0 z-50">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="text-white font-bold text-xl">WT</span>
+        </div>
+        <span class="text-xl font-bold text-gray-900">Workout Tracker</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a
+          href="/workouts"
+          class="<%= path === '/workouts' ? 'text-blue-600 font-semibold' : 'text-gray-700' %>"
+        >
+          Workouts
+        </a>
+        <a
+          href="/users"
+          class="<%= path === '/users' ? 'text-blue-600 font-semibold' : 'text-gray-700' %>"
+        >
+          Users
+        </a>
+        <a
+          href="/profile/<%= user._id %>"
+          class="<%= path === '/profile' ? 'text-blue-600 font-semibold' : 'text-gray-700' %>"
+        >
+          Profile
+        </a>
+        <form action="/api/auth/logout" method="POST">
+          <button type="submit" class="text-gray-700 hover:text-red-600 transition-colors">
+            Logout
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>
+<% } %>

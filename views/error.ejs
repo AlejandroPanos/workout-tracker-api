@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= docTitle %></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="bg-gray-50">
+    <div class="min-h-screen flex items-center justify-center px-4">
+      <div class="max-w-md w-full text-center">
+        <div class="mb-8">
+          <div
+            class="inline-flex items-center justify-center w-24 h-24 bg-red-100 rounded-full mb-4"
+          >
+            <span class="text-5xl">⚠️</span>
+          </div>
+          <h1 class="text-4xl font-bold text-gray-900 mb-2">Oops! Something went wrong!</h1>
+          <p class="text-lg text-gray-600">Received a <%= status %> error.</p>
+        </div>
+
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <p class="text-red-800 font-medium"><%= message %></p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/workouts"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors"
+          >
+            Go to Workouts
+          </a>
+          <a
+            href="/"
+            class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-900 rounded-lg font-semibold transition-colors"
+          >
+            Go Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
