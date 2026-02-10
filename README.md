@@ -86,24 +86,30 @@ views/
 
 ### Public Routes
 
-- `GET /` - Home page
-- `GET /register` - Registration
-- `GET /login` - Login
+| Method | Route       | Description  |
+| ------ | ----------- | ------------ |
+| GET    | `/`         | Home page    |
+| GET    | `/register` | Registration |
+| GET    | `/login`    | Login        |
 
 ### Protected Routes (Authentication Required)
 
-- `GET /workouts` - View all workouts
-- `POST /api/workouts` - Create workout
-- `GET /workouts/:id/edit` - Edit workout
-- `POST /api/workouts/:id/delete` - Delete workout
-- `GET /profile/:id` - User profile
-- `POST /api/users/:id/edit` - Update profile
+| Method | Route                      | Description       |
+| ------ | -------------------------- | ----------------- |
+| GET    | `/workouts`                | View all workouts |
+| POST   | `/api/workouts`            | Create workout    |
+| GET    | `/workouts/:id/edit`       | Edit workout      |
+| POST   | `/api/workouts/:id/delete` | Delete workout    |
+| GET    | `/profile/:id`             | User profile      |
+| POST   | `/api/users/:id/edit`      | Update profile    |
 
 ### Admin Routes
 
-- `GET /users` - View all users
-- `POST /api/users/:id/role` - Change user role
-- `POST /api/users/:id/delete` - Delete user
+| Method | Route                   | Description      |
+| ------ | ----------------------- | ---------------- |
+| GET    | `/users`                | View all users   |
+| POST   | `/api/users/:id/role`   | Change user role |
+| POST   | `/api/users/:id/delete` | Delete user      |
 
 ---
 
