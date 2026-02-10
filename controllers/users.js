@@ -1,13 +1,12 @@
 /* Create imports */
 const User = require("../models/user");
 const Workout = require("../models/workout");
-const bcrypt = require("bcrypt");
 const { cloudinary } = require("../config/cloudinary");
 
 /* Create controllers */
 exports.getUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password -profilePictureId");
     res.render("users/all-users", {
       users,
       path: "/users",
@@ -60,7 +59,7 @@ exports.postEditProfile = async (req, res, next) => {
     currentUser.email = email;
 
     if (password && password.trim() !== "") {
-      currentUser.password = password; // El pre('save') lo hasheará
+      currentUser.password = password;
     }
 
     if (req.cloudinaryUrl) {
@@ -85,7 +84,9 @@ exports.postEditProfile = async (req, res, next) => {
 exports.getUserProfile = async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const profileUser = await User.findById(userId).populate("workouts");
+    const profileUser = await User.findById(userId)
+      .populate("workouts")
+      .select("-password -profilePictureId");
     res.render("users/user-profile", {
       user: req.user,
       profileUser,
@@ -103,7 +104,9 @@ exports.getUserProfile = async (req, res, next) => {
 exports.getUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const profileUser = await User.findById(userId).populate("workouts");
+    const profileUser = await User.findById(userId)
+      .populate("workouts")
+      .select("-password -profilePictureId");
     res.render("users/user-profile", {
       user: req.user,
       profileUser,
@@ -141,8 +144,21 @@ exports.postDeleteProfile = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const isOwnAccount = userId === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isOwnAccount && !isAdmin) {
+      const error = new Error("You can only delete your own account");
+      error.status = 403;
+      return next(error);
+    }
 
     const user = await User.findById(userId);
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      return next(error);
+    }
 
     if (user.profilePictureId) {
       await cloudinary.uploader.destroy(user.profilePictureId);

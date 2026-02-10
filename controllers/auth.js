@@ -2,6 +2,7 @@
 const User = require("../models/user");
 const Workout = require("../models/workout");
 const { maxAge, createToken } = require("../helpers/helpers");
+const { cloudinary } = require("../config/cloudinary");
 
 /* Create controllers */
 exports.getRegister = (req, res) => {

@@ -3,7 +3,7 @@ const User = require("../models/user");
 const Workout = require("../models/workout");
 
 /* Create controllers */
-exports.getHome = (req, res) => {
+exports.getHome = (req, res, next) => {
   try {
     res.render("home", {
       docTitle: "Home",
@@ -56,7 +56,7 @@ exports.postCreateWorkout = async (req, res, next) => {
       difficulty,
       createdBy: userId,
     });
-    user.workouts.push(workout);
+    user.workouts.push(workout._id);
     await user.save();
     res.redirect("/workouts");
   } catch (error) {
@@ -71,6 +71,22 @@ exports.getEditWorkout = async (req, res, next) => {
   try {
     const workoutId = req.params.id;
     const workout = await Workout.findById(workoutId);
+
+    if (!workout) {
+      const error = new Error("Workout not found");
+      error.status = 404;
+      return next(error);
+    }
+
+    const isCreator = workout.createdBy.toString() === req.user._id.toString();
+    const isAdmin = req.user.role === "admin";
+
+    if (!isCreator && !isAdmin) {
+      const error = new Error("You can only edit your own workouts");
+      error.status = 403;
+      return next(error);
+    }
+
     res.render("workouts/edit-workout", {
       workout,
       path: "/workouts",
