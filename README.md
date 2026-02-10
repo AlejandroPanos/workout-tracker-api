@@ -27,15 +27,13 @@ A full-stack web application for creating and managing workout routines. Built w
 ## Quick Start
 
 1. **Clone and install**
-```bash
-git clone https://github.com/your-username/workout-tracker.git
-cd workout-tracker
-npm install
-```
+
+Clone and install the github repo.
 
 2. **Configure environment variables**
 
 Create a `.env` file:
+
 ```env
 MONGOOSE_URI=your_mongodb_connection_string
 SECRET_TOKEN=your_jwt_secret_key
@@ -47,11 +45,13 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 3. **Seed the database**
 
 Update the user ID in `src/utils/seed.js` with your own user ID, then run:
+
 ```bash
 npm run seed
 ```
 
 4. **Start the application**
+
 ```bash
 npm start
 ```
@@ -61,6 +61,7 @@ Navigate to `http://localhost:3000`
 ---
 
 ## Project Structure
+
 ```
 src/
 ├── config/          # Cloudinary configuration
@@ -69,7 +70,7 @@ src/
 ├── models/          # MongoDB schemas (User, Workout)
 ├── routes/          # Express routes
 ├── utils/           # Database seed script
-└── index.js         # Application entry point
+└── app.js           # Application entry point
 
 views/
 ├── auth/            # Login and register pages
@@ -84,11 +85,13 @@ views/
 ## Main Routes
 
 ### Public Routes
+
 - `GET /` - Home page
 - `GET /register` - Registration
 - `GET /login` - Login
 
 ### Protected Routes (Authentication Required)
+
 - `GET /workouts` - View all workouts
 - `POST /api/workouts` - Create workout
 - `GET /workouts/:id/edit` - Edit workout
@@ -97,6 +100,7 @@ views/
 - `POST /api/users/:id/edit` - Update profile
 
 ### Admin Routes
+
 - `GET /users` - View all users
 - `POST /api/users/:id/role` - Change user role
 - `POST /api/users/:id/delete` - Delete user
@@ -106,11 +110,13 @@ views/
 ## User Roles
 
 ### User (Default)
+
 - Create and manage their own workouts
 - Edit their own profile
 - Delete their own account
 
 ### Admin
+
 - All user permissions
 - View all users
 - Change user roles
@@ -123,6 +129,7 @@ views/
 ## Database Models
 
 ### User
+
 ```javascript
 {
   name: String,
@@ -132,11 +139,12 @@ views/
   role: String (user/admin),
   profilePicture: String,
   profilePictureId: String,
-  workouts: [ObjectId] // ref: Workout
+  workouts: [ObjectId]
 }
 ```
 
 ### Workout
+
 ```javascript
 {
   name: String,
@@ -144,7 +152,7 @@ views/
   exercises: [String],
   duration: Number,
   difficulty: String (beginner/intermediate/advanced),
-  createdBy: ObjectId // ref: User
+  createdBy: ObjectId
 }
 ```
 
@@ -155,11 +163,13 @@ views/
 The seed script populates the database with 5 sample workouts.
 
 **Before running:**
+
 1. Register a user account
 2. Copy your user's `_id` from MongoDB
 3. Update `createdBy` in `src/utils/seed.js`
 
 **Run:**
+
 ```bash
 npm run seed
 ```
@@ -177,32 +187,8 @@ npm run seed
 ---
 
 ## NPM Scripts
+
 ```bash
 npm start    # Start the application
 npm run seed # Seed the database
 ```
-
----
-
-## Project Requirements Fulfilled
-
-✅ Two models with relationships (User ↔ Workout)  
-✅ Role-based access control (user/admin)  
-✅ Authentication middleware  
-✅ Image upload with Cloudinary  
-✅ Complete CRUD operations  
-✅ Database seeding  
-✅ No duplicates in user's workout array  
-
----
-
-## License
-
-MIT License
-
----
-
-## Author
-
-**Alejandro Paños**  
-GitHub: [@AlejandroPanos](https://github.com/AlejandroPanos)
