@@ -44,6 +44,12 @@ const userSchema = new Schema({
       ref: "Workout",
     },
   ],
+  savedWorkouts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Workout",
+    },
+  ],
   createdAt: {
     type: Date,
     default: () => Date.now(),
@@ -73,6 +79,15 @@ userSchema.pre("save", async function (next) {
     }
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+});
+
+userSchema.pre("save", function (next) {
+  try {
+    this.savedWorkouts = [...new Set(this.savedWorkouts.map((id) => id.toString()))];
+  } catch (error) {
+    console.error(error);
     next(error);
   }
 });

@@ -12,6 +12,8 @@ router.post("/api/workouts", requireAuth, workoutsController.postCreateWorkout);
 router.get("/workouts/:id", requireAuth, workoutsController.getWorkoutDetail);
 router.get("/workouts/:id/edit", requireAuth, workoutsController.getEditWorkout);
 router.post("/api/workouts/:id/edit", requireAuth, workoutsController.postEditWorkout);
+router.post("/api/workouts/:id/save", requireAuth, workoutsController.postSaveWorkout);
+router.post("/api/workouts/:id/unsave", requireAuth, workoutsController.postUnsaveWorkout);
 router.post("/api/workouts/:id/delete", requireAuth, workoutsController.postDeleteWorkout);
 
 /* Export router */

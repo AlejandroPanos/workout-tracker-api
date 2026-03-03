@@ -157,6 +157,49 @@ exports.getWorkoutDetail = async (req, res, next) => {
   }
 };
 
+exports.postSaveWorkout = async (req, res, next) => {
+  try {
+    const workoutId = req.params.id;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    if (user.savedWorkouts.includes(workoutId)) {
+      const error = new Error("Workout already saved");
+      error.status = 400;
+      return next(error);
+    }
+
+    user.savedWorkouts.push(workoutId);
+    await user.save();
+
+    res.redirect("/workouts");
+  } catch (error) {
+    console.log(error);
+    error.status = 500;
+    error.message = "Could not save workout";
+    next(error);
+  }
+};
+
+exports.postUnsaveWorkout = async (req, res, next) => {
+  try {
+    const workoutId = req.params.id;
+    const userId = req.user._id;
+
+    await User.findByIdAndUpdate(userId, {
+      $pull: { savedWorkouts: workoutId },
+    });
+
+    res.redirect("/workouts");
+  } catch (error) {
+    console.log(error);
+    error.status = 500;
+    error.message = "Could not remove workout";
+    next(error);
+  }
+};
+
 exports.postDeleteWorkout = async (req, res, next) => {
   try {
     const workoutId = req.params.id;
