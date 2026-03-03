@@ -125,11 +125,27 @@ exports.postChangeRole = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const user = await User.findById(userId);
-    if (user.role === "user") {
-      user.role = "admin";
-    } else if (user.role === "admin") {
-      user.role = "user";
+
+    if (!user) {
+      const error = new Error("User not found");
+      error.status = 404;
+      return next(error);
     }
+
+    if (user.role === "admin") {
+      const adminCount = await User.countDocuments({ role: "admin" });
+
+      if (adminCount <= 1) {
+        const error = new Error("Cannot remove the last admin. At least one admin must exist.");
+        error.status = 403;
+        return next(error);
+      }
+
+      user.role = "user";
+    } else if (user.role === "user") {
+      user.role = "admin";
+    }
+
     await user.save();
     res.redirect("/users");
   } catch (error) {
@@ -158,6 +174,23 @@ exports.postDeleteProfile = async (req, res, next) => {
       const error = new Error("User not found");
       error.status = 404;
       return next(error);
+    }
+
+    const userCount = await User.countDocuments();
+    if (userCount <= 1) {
+      const error = new Error("Cannot delete the last user in the system.");
+      error.status = 403;
+      return next(error);
+    }
+
+    if (user.role === "admin") {
+      const adminCount = await User.countDocuments({ role: "admin" });
+
+      if (adminCount <= 1) {
+        const error = new Error("Cannot delete the last admin. At least one admin must exist.");
+        error.status = 403;
+        return next(error);
+      }
     }
 
     if (user.profilePictureId) {
